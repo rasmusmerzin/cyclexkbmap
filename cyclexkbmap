@@ -1,0 +1,15 @@
+#!/bin/sh
+
+met=0
+for km in "$@"
+do
+  if [ "$met" -gt 0 ]
+  then
+    met=2
+    setxkbmap "$km"
+    break
+  elif [ "$(setxkbmap -query | awk '/layout:/{print $2}')" = "$km" ]
+  then met=1
+  fi
+done
+[ "$met" -lt 2 ] && setxkbmap "$1"
